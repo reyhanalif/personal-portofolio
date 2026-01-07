@@ -29,10 +29,10 @@ export default function RootLayout({
       >
         {/* Fixed Anime Background */}
         <div className="fixed inset-0 z-[-1] opacity-40 bg-[url('/bg-lineart.png')] bg-cover bg-center grayscale" />
-        
+
         {/* Optional backdrop blur overlay for better text contrast */}
-        <div className="fixed inset-0 z-[-1] bg-white/60 backdrop-blur-[2px]" />
-        
+        <div className="fixed inset-0 z-[-1] bg-white/75 backdrop-blur-[2px]" />
+
         {children}
       </body>
     </html>
