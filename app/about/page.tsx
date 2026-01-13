@@ -122,14 +122,16 @@ export default function AboutPage() {
                             </div>
                         </div>
 
-                        <motion.button
+                        <motion.a
+                            href="/CV Reyhan Alif Pradityo - Data Scientist 2026.pdf"
+                            download
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="mt-6 flex items-center gap-2 px-6 py-3 bg-ink text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                            className="mt-6 flex items-center gap-2 px-6 py-3 bg-ink text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 w-fit cursor-pointer"
                         >
                             <Download size={20} />
                             Download CV
-                        </motion.button>
+                        </motion.a>
                     </motion.div>
 
                     {/* Experience */}
