@@ -22,7 +22,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                     className="text-xl md:text-2xl text-pencil max-w-2xl leading-relaxed mb-8"
                 >
-                    Data Scientist with expertise in digital banking and environmental science. Expert in SQL, Python, and cloud-based analytics, building dashboards, predictive models, and business intelligence for large-scale operations.
+                    Imperial College London MSc graduate specializing in Data Science and Analytics. 2+ years experience in digital banking analytics at Bank Jago, now focused on environmental data science and geospatial analysis. Expert in building predictive models, dashboards, and business intelligence solutions for large-scale operations.
                 </motion.p>
 
                 <motion.div

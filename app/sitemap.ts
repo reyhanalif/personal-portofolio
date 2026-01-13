@@ -5,8 +5,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const projects = await getAllProjects();
     const stories = await getAllStories();
 
-    // Replace with your actual domain after deployment
-    const baseUrl = 'https://your-domain.vercel.app';
+    const baseUrl = 'https://pradityora.vercel.app';
 
     const projectUrls = projects.map((project) => ({
         url: `${baseUrl}/projects/${project.slug}`,
