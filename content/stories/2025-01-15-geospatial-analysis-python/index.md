@@ -77,3 +77,7 @@ Choose the right resolution for your analysis:
 Geospatial analysis is a powerful tool for environmental data science. By combining satellite imagery, spatial statistics, and domain knowledge, you can create impactful solutions for real-world problems.
 
 Happy mapping! 🗺️
+
+
+![Visualization of Sentinel-2 data analysis](sheb.jpg)
+
