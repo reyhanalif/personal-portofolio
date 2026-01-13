@@ -1,9 +1,29 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { remark } from 'remark';
+import html from 'remark-html';
 
 const projectsDirectory = path.join(process.cwd(), 'content/projects');
 const storiesDirectory = path.join(process.cwd(), 'content/stories');
+
+// Convert markdown to HTML and fix image paths
+async function markdownToHtml(markdown: string, contentPath: string): Promise<string> {
+    const result = await remark().use(html).process(markdown);
+    let htmlContent = result.toString();
+
+    // Convert relative image paths to use the content route
+    htmlContent = htmlContent.replace(
+        /<img src="(?!http)([^"]+)"/g,
+        (match, src) => {
+            const cleanSrc = src.replace(/^\.?\//, '');
+            const imagePath = `/content/${contentPath}/${cleanSrc}`;
+            return `<img src="${imagePath}"`;
+        }
+    );
+
+    return htmlContent;
+}
 
 export interface ProjectMetadata {
     title: string;
@@ -67,7 +87,7 @@ export function getAllStorySlugs(): string[] {
 }
 
 // Get project by slug
-export function getProjectBySlug(slug: string): Project | null {
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
     try {
         const projectPath = path.join(projectsDirectory, slug, 'index.md');
 
@@ -77,6 +97,10 @@ export function getProjectBySlug(slug: string): Project | null {
 
         const fileContents = fs.readFileSync(projectPath, 'utf8');
         const { data, content } = matter(fileContents);
+
+        // Convert markdown to HTML with correct image paths
+        const contentPath = `projects/${slug}`;
+        const htmlContent = await markdownToHtml(content, contentPath);
 
         // Process image paths to be relative to the project folder
         const images = (data.images || []).map((img: string) =>
@@ -93,7 +117,7 @@ export function getProjectBySlug(slug: string): Project | null {
             slug, // Essential: override with folder name
             images,
             thumbnail,
-            content,
+            content: htmlContent,
         };
     } catch (error) {
         console.error(`Error reading project ${slug}:`, error);
@@ -102,7 +126,7 @@ export function getProjectBySlug(slug: string): Project | null {
 }
 
 // Get story by slug
-export function getStoryBySlug(slug: string): Story | null {
+export async function getStoryBySlug(slug: string): Promise<Story | null> {
     try {
         const storyPath = path.join(storiesDirectory, slug, 'index.md');
 
@@ -113,6 +137,10 @@ export function getStoryBySlug(slug: string): Story | null {
         const fileContents = fs.readFileSync(storyPath, 'utf8');
         const { data, content } = matter(fileContents);
 
+        // Convert markdown to HTML with correct image paths
+        const contentPath = `stories/${slug}`;
+        const htmlContent = await markdownToHtml(content, contentPath);
+
         // Process cover image path
         const coverImage = data.coverImage
             ? `/content/stories/${slug}/${data.coverImage}`
@@ -122,7 +150,7 @@ export function getStoryBySlug(slug: string): Story | null {
             ...(data as StoryMetadata),
             slug, // Essential: override with folder name
             coverImage,
-            content,
+            content: htmlContent,
         };
     } catch (error) {
         console.error(`Error reading story ${slug}:`, error);
@@ -131,28 +159,31 @@ export function getStoryBySlug(slug: string): Story | null {
 }
 
 // Get all projects
-export function getAllProjects(): Project[] {
+export async function getAllProjects(): Promise<Project[]> {
     const slugs = getAllProjectSlugs();
-    const projects = slugs
-        .map(slug => getProjectBySlug(slug))
+    const projects = await Promise.all(
+        slugs.map(slug => getProjectBySlug(slug))
+    );
+    
+    return projects
         .filter((project): project is Project => project !== null)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    return projects;
 }
 
 // Get all stories
-export function getAllStories(): Story[] {
+export async function getAllStories(): Promise<Story[]> {
     const slugs = getAllStorySlugs();
-    const stories = slugs
-        .map(slug => getStoryBySlug(slug))
+    const stories = await Promise.all(
+        slugs.map(slug => getStoryBySlug(slug))
+    );
+    
+    return stories
         .filter((story): story is Story => story !== null)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    return stories;
 }
 
 // Get featured projects
-export function getFeaturedProjects(): Project[] {
-    return getAllProjects().filter(project => project.featured);
+export async function getFeaturedProjects(): Promise<Project[]> {
+    const projects = await getAllProjects();
+    return projects.filter(project => project.featured);
 }

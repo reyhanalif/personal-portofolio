@@ -1,7 +1,7 @@
 import { getAllProjects } from "@/lib/content";
 import ProjectsClient from "./ProjectsClient";
 
-export default function ProjectsPage() {
-    const projects = getAllProjects();
+export default async function ProjectsPage() {
+    const projects = await getAllProjects();
     return <ProjectsClient projects={projects} />;
 }

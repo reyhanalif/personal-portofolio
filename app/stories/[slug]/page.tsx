@@ -11,14 +11,14 @@ export async function generateStaticParams() {
 
 export default async function StoryPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const story = getStoryBySlug(slug);
+    const story = await getStoryBySlug(slug);
 
     if (!story) {
         notFound();
     }
 
     // Get recommended stories (excluding current one)
-    const allStories = getAllStories();
+    const allStories = await getAllStories();
     const recommendations = allStories
         .filter(s => s.slug !== slug)
         .slice(0, 3);

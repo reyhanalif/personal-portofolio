@@ -1,8 +1,8 @@
 import { getFeaturedProjects } from "@/lib/content";
 import FeaturedProjectsClient from "./FeaturedProjectsClient";
 
-export default function FeaturedProjects() {
-    const projects = getFeaturedProjects();
+export default async function FeaturedProjects() {
+    const projects = await getFeaturedProjects();
 
     // Transform to match the expected format
     const transformedProjects = projects.map((project, index) => ({

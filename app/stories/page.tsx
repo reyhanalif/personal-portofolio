@@ -1,7 +1,7 @@
 import { getAllStories } from "@/lib/content";
 import StoriesClient from "./StoriesClient";
 
-export default function StoriesPage() {
-    const stories = getAllStories();
+export default async function StoriesPage() {
+    const stories = await getAllStories();
     return <StoriesClient stories={stories} />;
 }

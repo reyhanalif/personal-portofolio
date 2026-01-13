@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
 import ProjectImageCarousel from "../../components/ProjectImageCarousel";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { Project } from "@/lib/content";
 import Navbar from "../../components/Navbar";
 
@@ -96,12 +94,9 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
-                                className="bg-white/80 backdrop-blur-sm rounded-2xl border border-line shadow-sm p-8 prose prose-lg prose-slate max-w-none"
-                            >
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                    {project.content}
-                                </ReactMarkdown>
-                            </motion.section>
+                                className="bg-white/80 backdrop-blur-sm rounded-2xl border border-line shadow-sm p-8 prose prose-lg max-w-none"
+                                dangerouslySetInnerHTML={{ __html: project.content }}
+                            />
                         </div>
 
                         {/* Sidebar Info */}

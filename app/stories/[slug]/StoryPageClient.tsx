@@ -3,8 +3,6 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, BookOpen } from "lucide-react";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { Story } from "@/lib/content";
 import Navbar from "../../components/Navbar";
 
@@ -101,11 +99,10 @@ export default function StoryPageClient({ story, recommendations }: StoryPageCli
                                 </div>
                             )}
 
-                            <div className="prose prose-lg prose-slate max-w-none prose-headings:font-serif prose-headings:font-bold prose-h1:text-3xl prose-p:text-pencil prose-p:leading-relaxed prose-li:text-pencil">
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                    {story.content}
-                                </ReactMarkdown>
-                            </div>
+                            <div 
+                                className="prose prose-lg max-w-none"
+                                dangerouslySetInnerHTML={{ __html: story.content }}
+                            />
                         </motion.div>
 
                         {/* Recommendations Sidebar */}
